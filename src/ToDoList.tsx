@@ -65,7 +65,7 @@ export function ToDoList () {
         
 
         <div>
-          {filteredTasks.length > 0 ? (
+          {filteredTasks && filteredTasks.length > 0 ? (
             filteredTasks.map(task => (
               <div key={task.id} className='flex justify-between items-center px-2 border-b-[1px] border-zinc-600'>
                 <div className='flex items-center gap-2 py-4'>
