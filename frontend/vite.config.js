@@ -10,6 +10,10 @@ export default defineConfig({
     },
   },
   test: {
+    reporters: ['default', 'html'],
+    outputFile: {
+      html: './reports/test-report.html',
+    },
     browser: {
       enabled: true,
       name: 'chromium',
