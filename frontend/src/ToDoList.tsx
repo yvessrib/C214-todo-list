@@ -13,7 +13,7 @@ export function addTask(tasks: task[], title: string) {
 }
 
 export function toggleComplete(tasks: task[], taskId: number) {
-  return tasks.map((task) => 
+  return tasks.map((task) =>
     task.id === taskId ? { ...task, completed: !task.completed } : task
   );
 }
@@ -22,7 +22,7 @@ export function removeTask(tasks: task[], taskId: number) {
   return tasks.filter((task) => task.id !== taskId);
 }
 
-export function ToDoList () {
+export function ToDoList() {
 
   const [tasks, setTasks] = useState<task[]>([]);
   const [filter, setFilter] = useState<'all' | 'complete' | 'incomplete'>('all');
@@ -53,25 +53,25 @@ export function ToDoList () {
 
   return (
     <div className='text-white flex flex-col justify-center items-center p-5'>
-      
+
       <h1 className='font-semibold text-3xl p-6'>To-Do List</h1>
       <div className='flex flex-col gap-4 w-full max-w-2xl'>
         <div className='flex gap-2' >
-          <input 
+          <input
             className='placeholder-zinc-700 px-2 flex-1 p-1 rounded text-black outline-1 outline-violet-500'
             type='text'
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
             placeholder="Add a new task"
           />
-          <button 
+          <button
             className='bg-violet-500 hover:bg-violet-700 text-sm text-white font-bold py-2 px-4 rounded outline-1 outline-white'
-            type='button' 
+            type='button'
             onClick={() => handleAddTask(newTaskTitle)}>Add task</button>
         </div>
-      
+
         <div className='flex gap-2'>
-          <input 
+          <input
             className='placeholder-zinc-700 px-2 flex-1 p-1 rounded text-black outline-1 outline-violet-500'
             id="search"
             type='text'
@@ -81,8 +81,8 @@ export function ToDoList () {
           />
 
           <select
-            className='p-2 rounded text-black outline-1 outline-violet-500' 
-            value={filter} 
+            className='p-2 rounded text-black outline-1 outline-violet-500'
+            value={filter}
             onChange={(e) => setFilter(e.target.value as 'all' | 'complete' | 'incomplete')}
           >
             <option value="all">All</option>
@@ -90,14 +90,13 @@ export function ToDoList () {
             <option value="incomplete">Incomplete</option>
           </select>
         </div>
-        
 
         <div>
           {filteredTasks && filteredTasks.length > 0 ? (
             filteredTasks.map(task => (
               <div key={task.id} className='flex justify-between items-center px-2 border-b-[1px] border-zinc-600'>
                 <div className='flex items-center gap-2 py-4'>
-                  <Checkbox  
+                  <Checkbox
                     checked={task.completed}
                     onCheckedChange={() => handleToggleComplete(task.id)}
                     className='bg-white outline-1 outline-violet-500'
@@ -106,8 +105,8 @@ export function ToDoList () {
                 </div>
                 <div className='flex items-center gap-4'>
                   <span className={`${task.completed ? 'text-green-500' : 'text-red-500'}`}>{task.completed ? 'Complete' : 'Incomplete'}</span>
-                  <button type='button' onClick={() => handleRemoveTask(task.id)} className='outline-1 outline-violet-500'>
-                    <Trash2 className='text-zinc-500 hover:text-red-500 ' size={22}/>
+                  <button aria-label='delete' type='button' onClick={() => handleRemoveTask(task.id)} className='outline-1 outline-violet-500'>
+                    <Trash2 className='text-zinc-500 hover:text-red-500 ' size={22} />
                   </button>
                 </div>
               </div>
@@ -116,13 +115,9 @@ export function ToDoList () {
             <div className='text-center font-semibold py-4 text-zinc-600'>
               No tasks defined
             </div>
-          )
-
-        }
+          )}
         </div>
       </div>
-
     </div>
   );
 };
-
