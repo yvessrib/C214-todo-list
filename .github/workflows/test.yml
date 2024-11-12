@@ -16,39 +16,43 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
+        working-directory: ./backend
 
       - name: Run Tests
         run: npm test
+        working-directory: ./backend
 
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: ./coverage
+          path: ./backend/coverage
 
       - name: Upload Test Report
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: test-report
-          path: ./reports/
+          path: ./backend/reports/
 
   build:
-      name: Build Project
-      runs-on: ubuntu-latest
-    
-      steps:
-        - uses: actions/checkout@v3
-    
-        - uses: actions/setup-node@v3
-          with:
-            node-version: 18
-            cache: 'npm'
-    
-        - run: npm ci
-    
-        - run: npm run build
+    name: Build Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - run: npm ci
+        working-directory: ./backend
+
+      - run: npm run build
+        working-directory: ./backend
 
   send-email:
     name: Send Email
