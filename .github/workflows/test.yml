@@ -3,33 +3,29 @@ name: Run Unit Tests
 on: [push]
 
 jobs:
-  run-unit-tests:
-    name: Run Unit Tests
+  setup-node-env:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'npm'
-          working-directory: ./backend
+          cache-dependency-path: ./backend/package-lock.json
+      - run: cd backend && npm ci
 
-      - run: npm ci
-        working-directory: ./backend
-
-      - name: Run Tests
-        run: npm test
-        working-directory: ./backend
-
+  run-unit-tests:
+    needs: setup-node-env
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd backend && npm test
       - name: Upload Coverage Report
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: ./backend/coverage
-
       - name: Upload Test Report
         if: always()
         uses: actions/upload-artifact@v3
@@ -38,32 +34,8 @@ jobs:
           path: ./backend/reports/
 
   build:
-    name: Build Project
+    needs: setup-node-env
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-          working-directory: ./backend
-
-      - run: npm ci
-        working-directory: ./backend
-
-      - run: npm run build
-        working-directory: ./backend
-
-  send-email:
-    name: Send Email
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Run send-mail script
-        run: sh scripts/send-mail.sh
-        env:
-          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+      - run: cd backend && npm run build
