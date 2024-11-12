@@ -38,3 +38,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ./backend/package-lock.json
       - run: cd backend && npm i && npm run build
+
+      - name: Upload Build Artifact
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ./backend/build/
